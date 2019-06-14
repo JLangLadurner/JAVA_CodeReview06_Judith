@@ -33,6 +33,8 @@ public class TeacherApp extends Application {
     private TextField surnametxt;
     private TextField email;
     private ListView<ClassRooms>classRoomsListView;
+    private ObservableList<ClassRooms>dataClass;
+    private TextField classRoom;
 
 
     private TeacherDataAccess dbaccess;
@@ -47,6 +49,7 @@ public class TeacherApp extends Application {
     public void init() {
         try {
             dbaccess = new TeacherDataAccess();
+            dbaccess2 = new ClassesDataAccess();
         } catch (Exception e) {
             displayException(e);
         }
@@ -57,6 +60,7 @@ public class TeacherApp extends Application {
 
         try {
             dbaccess.closeDb();
+            dbaccess2.closeDb();
         } catch (Exception e) {
 
             displayException(e);
@@ -85,9 +89,25 @@ public class TeacherApp extends Application {
             listView.setItems(data);
             grid.add(listView, 1, 1); // col = 1, row = 1
 
+            Label classes = new Label("Teaches this classes");
+
             classRoomsListView = new ListView<>();
+
+
             classRoomsListView.getSelectionModel().selectedIndexProperty().addListener(
                     new ListSelectChangeListener());
+            classRoomsListView.setMaxSize(200, 400);
+
+            //classRoomsListView.setMouseTransparent(true);
+            //classRoomsListView.setFocusTraversable(false);
+            dataClass = getDbData2();
+            classRoomsListView.setItems(dataClass);
+            VBox teacherclasses = new VBox();
+            teacherclasses.setSpacing(10);
+            teacherclasses.getChildren().addAll(classes,classRoomsListView);
+            grid.add(classRoomsListView,1,4);
+
+
 
 
 
@@ -136,6 +156,7 @@ public class TeacherApp extends Application {
 
             // initial selection
             listView.getSelectionModel().selectFirst();
+            classRoomsListView.getSelectionModel().selectFirst();
 
         }
     private class ListSelectChangeListener implements ChangeListener<Number> {
@@ -156,6 +177,25 @@ public class TeacherApp extends Application {
             nametxt.setText(teacher.getTeacherName());
             surnametxt.setText(teacher.getTeacherSurname());
             email.setText(teacher.getTeacherEmail() + " - selected");
+        }
+    }
+
+    //adds second listener to classroom
+    private class ClassSelectChangeListener implements ChangeListener<Number> {
+
+        @Override
+        public void changed(ObservableValue<? extends Number> ov,
+                            Number old_val, Number new_val) {
+
+            if ((new_val.intValue() < 0) || (new_val.intValue() >= data.size())) {
+
+                return; // invalid data
+            }
+
+            // set ClassName for the selected teacher
+            ClassRooms clssR= dataClass.get(new_val.intValue());
+            classRoom.setText(clssR.getClassName()+ " - selected");
+
         }
     }
 

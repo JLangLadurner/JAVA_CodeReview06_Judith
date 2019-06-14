@@ -5,7 +5,7 @@ import java.util.List;
 public class ClassesDataAccess {
 
     private Connection conn;
-    private static final String classTable = "classrooms";
+    private static final String classTable = "classRooms";
 
     public ClassesDataAccess()
             throws SQLException, ClassNotFoundException {
@@ -38,14 +38,14 @@ public class ClassesDataAccess {
 
     public List<ClassRooms> getAllClass()  throws SQLException {
 
-        String sql = "SELECT className FROM " + classTable + " INNER JOIN teacher ON fk_classroomID = classroomId";
-        PreparedStatement pstmnt = conn.prepareStatement(sql);
-        ResultSet rs = pstmnt.executeQuery();
+        String sql2 = "SELECT classRoomId, className FROM " + classTable + " INNER JOIN teacher ON fk_teacherId = teacherId";
+        PreparedStatement pstmnt = conn.prepareStatement(sql2);
+        ResultSet rs2 = pstmnt.executeQuery();
         List<ClassRooms> listClass = new ArrayList<>();
 
-        while (rs.next()) {
-            int i = rs.getInt("classroomId");
-            String className = rs.getString("className");
+        while (rs2.next()) {
+            int i = rs2.getInt("classRoomId");
+            String className = rs2.getString("className");
 
             listClass.add(new ClassRooms(i,className));
         }

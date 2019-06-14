@@ -11,7 +11,6 @@ public class ClassRooms {
     @Override
     public String toString() {
         return className;
-
     }
 
     public int getClassroomId() {
