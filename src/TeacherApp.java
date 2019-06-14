@@ -32,8 +32,11 @@ public class TeacherApp extends Application {
     private TextField nametxt;
     private TextField surnametxt;
     private TextField email;
+    private ListView<ClassRooms>classRoomsListView;
+
 
     private TeacherDataAccess dbaccess;
+    private ClassesDataAccess dbaccess2;
 
 
     public static void main(String[] args) {
@@ -81,6 +84,12 @@ public class TeacherApp extends Application {
             data = getDbData();
             listView.setItems(data);
             grid.add(listView, 1, 1); // col = 1, row = 1
+
+            classRoomsListView = new ListView<>();
+            classRoomsListView.getSelectionModel().selectedIndexProperty().addListener(
+                    new ListSelectChangeListener());
+
+
 
             // todo name label and text fld - in a hbox
 
@@ -142,7 +151,7 @@ public class TeacherApp extends Application {
 
             // set name and desc fields for the selected teacher
             Teacher teacher = data.get(new_val.intValue());
-            String  id = Integer.toString(teacher.getTeacherId());
+            String  id = Integer.toString(teacher.getTeacherId());//converts id to a string to be able to display it
             idtxt.setText(id);
             nametxt.setText(teacher.getTeacherName());
             surnametxt.setText(teacher.getTeacherSurname());
@@ -164,6 +173,22 @@ public class TeacherApp extends Application {
 
         ObservableList<Teacher> dbData = FXCollections.observableList(list);
         return dbData;
+    }
+
+    private ObservableList<ClassRooms> getDbData2() {
+
+        List<ClassRooms> listClass = null;
+
+        try {
+            listClass = dbaccess2.getAllClass();
+        }
+        catch (Exception e) {
+
+            displayException(e);
+        }
+
+        ObservableList<ClassRooms> dbData2 = FXCollections.observableList(listClass);
+        return dbData2;
     }
 
 
