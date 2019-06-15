@@ -149,32 +149,37 @@ public class TeacherApp extends Application {
 
             // set name and desc fields for the selected teacher
             Teacher teacher = data.get(new_val.intValue());
-            String  id = Integer.toString(teacher.getTeacherId());//converts id to a string to be able to display it
-            idtxt.setText(id);
+
+            //String  id = Integer.toString(teacher.getTeacherId());//converts id to a string to be able to display it
+
+            idtxt.setText(Integer.toString(teacher.getTeacherId()));//other possibility to convert to integer
             nametxt.setText(teacher.getTeacherName());
             surnametxt.setText(teacher.getTeacherSurname());
             email.setText(teacher.getTeacherEmail() + " - selected");
+
+            //dataClass = getDbData(Integer.valueOf(teacher.getTeacherId())); working on it
+            classRoomsListView.setItems(dataClass);
         }
     }
 
-    //adds second listener to classroom
-    private class ClassSelectChangeListener implements ChangeListener<Number> {
+        //adds second listener to classroom - not necessary at the moment still needs work
+        /*private class ClassSelectChangeListener implements ChangeListener<Number> {
 
-        @Override
-        public void changed(ObservableValue<? extends Number> ov,
-                            Number old_val, Number new_val) {
+            @Override
+            public void changed(ObservableValue<? extends Number> ov,
+                                Number old_val, Number new_val) {
 
-            if ((new_val.intValue() < 0) || (new_val.intValue() >= data.size())) {
+                if ((new_val.intValue() < 0) || (new_val.intValue() >= data.size())) {
 
-                return; // invalid data
+                    return; // invalid data
+                }
+
+                // set ClassName for the selected teacher
+                ClassRooms clssR= dataClass.get(new_val.intValue());
+                classRoom.setText(clssR.getClassName()+ " - selected");
+
             }
-
-            // set ClassName for the selected teacher
-            ClassRooms clssR= dataClass.get(new_val.intValue());
-            classRoom.setText(clssR.getClassName()+ " - selected");
-
-        }
-    }
+        }*/
 
     private ObservableList<Teacher> getDbData() {
 
