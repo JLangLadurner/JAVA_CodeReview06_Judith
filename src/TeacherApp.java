@@ -3,18 +3,10 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.text.Text;
-import javafx.scene.paint.Color;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Button;
-import javafx.scene.control.Tooltip;
 import javafx.geometry.Pos;
 import javafx.geometry.Insets;
 import javafx.collections.FXCollections;
@@ -22,8 +14,7 @@ import javafx.collections.ObservableList;
 import java.util.List;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+
 
 public class TeacherApp extends Application {
     private ListView<Teacher> listView;
@@ -89,29 +80,24 @@ public class TeacherApp extends Application {
             listView.setItems(data);
             grid.add(listView, 1, 1); // col = 1, row = 1
 
-            Label classes = new Label("Teaches this classes");
 
+            //adds classroomList to gridpane
+            Label classes = new Label("Teaches this classes: ");
             classRoomsListView = new ListView<>();
-
-
             classRoomsListView.getSelectionModel().selectedIndexProperty().addListener(
                     new ListSelectChangeListener());
-            classRoomsListView.setMaxSize(200, 400);
-
-            //classRoomsListView.setMouseTransparent(true);
-            //classRoomsListView.setFocusTraversable(false);
             dataClass = getDbData2();
             classRoomsListView.setItems(dataClass);
+            //puts heading and list in a vbox
+            VBox clvbox = new VBox();
+            clvbox.getChildren().addAll(classes,classRoomsListView);
+            //puts clvbox in another VBox
             VBox teacherclasses = new VBox();
             teacherclasses.setSpacing(10);
-            teacherclasses.getChildren().addAll(classes,classRoomsListView);
-            grid.add(classRoomsListView,1,4);
+            teacherclasses.getChildren().addAll(clvbox);
+            grid.add(teacherclasses,3,1);
 
-
-
-
-
-            // todo name label and text fld - in a hbox
+            // teacher name label and text fld - in a vbox
 
             Label headlbl = new Label("This Teacher:");
             Label idlbl = new Label("ID");
@@ -134,16 +120,7 @@ public class TeacherApp extends Application {
             vlable.setSpacing(10);
             vlable.getChildren().addAll(headlbl, idlbl,idtxt,namelbl,nametxt,surnamelbl,surnametxt, emaillbl,email);
 
-            // todo desc text area in a scrollpane
-
-
-            /*ScrollPane sp = new ScrollPane();
-            sp.setFitToWidth(true);
-            sp.setFitToHeight(true);
-            sp.setPrefHeight(300);
-            sp.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-            sp.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);*/
-
+            //VBox for center with all the labels
             VBox vbox = new VBox();
             vbox.setSpacing(10);
             vbox.getChildren().addAll(vlable);
